@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\copy.png" />
+    <None Remove="Images\cut.png" />
+    <None Remove="Images\delete.png" />
+    <None Remove="Images\diagonal-line.png" />
+    <None Remove="Images\dot-line.png" />
+    <None Remove="Images\dotline0.png" />
+    <None Remove="Images\dotline1.png" />
+    <None Remove="Images\dotline2.png" />
+    <None Remove="Images\ellipse.png" />
+    <None Remove="Images\eraser.png" />
+    <None Remove="Images\fill.png" />
+    <None Remove="Images\image.png" />
+    <None Remove="Images\line-thickness.png" />
+    <None Remove="Images\palette.png" />
+    <None Remove="Images\paste.png" />
+    <None Remove="Images\pen.png" />
+    <None Remove="Images\rectangle.png" />
+    <None Remove="Images\redo.png" />
+    <None Remove="Images\selection.png" />
+    <None Remove="Images\size.png" />
+    <None Remove="Images\text.png" />
+    <None Remove="Images\undo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Fluent.Ribbon" Version="10.0.4" />
+    <PackageReference Include="PropertyChanged.Fody" Version="4.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ellipse2D\Ellipse2D.csproj" />
+    <ProjectReference Include="..\GraphicsLibrary\GraphicsLibrary.csproj" />
+    <ProjectReference Include="..\Line2D\Line2D.csproj" />
+    <ProjectReference Include="..\Rectangle2D\Rectangle2D.csproj" />
+    <ProjectReference Include="..\Text2D\Text2D.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\copy.png" />
+    <Resource Include="Images\cut.png" />
+    <Resource Include="Images\delete.png" />
+    <Resource Include="Images\diagonal-line.png" />
+    <Resource Include="Images\dot-line.png" />
+    <Resource Include="Images\dotline0.png" />
+    <Resource Include="Images\dotline1.png" />
+    <Resource Include="Images\dotline2.png" />
+    <Resource Include="Images\ellipse.png" />
+    <Resource Include="Images\eraser.png" />
+    <Resource Include="Images\fill.png" />
+    <Resource Include="Images\image.png" />
+    <Resource Include="Images\line-thickness.png" />
+    <Resource Include="Images\palette.png" />
+    <Resource Include="Images\paste.png" />
+    <Resource Include="Images\pen.png" />
+    <Resource Include="Images\rectangle.png" />
+    <Resource Include="Images\redo.png" />
+    <Resource Include="Images\selection.png" />
+    <Resource Include="Images\size.png" />
+    <Resource Include="Images\text.png" />
+    <Resource Include="Images\undo.png" />
+  </ItemGroup>
+
+</Project>

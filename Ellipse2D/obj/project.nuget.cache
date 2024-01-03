@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "kt79gvtU77k0whC8Y0nLMesKbqYg6DBEF+sbHxC2Hi74u6lBHHzoVWZK5bs09SdS7C+r1VRZVwq2IWxo8kWNdw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Allen\\source\\repos\\Paint\\Ellipse2D\\Ellipse2D.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Allen\\.nuget\\packages\\controlzex\\6.0.0\\controlzex.6.0.0.nupkg.sha512",
+    "C:\\Users\\Allen\\.nuget\\packages\\fluent.ribbon\\10.0.4\\fluent.ribbon.10.0.4.nupkg.sha512",
+    "C:\\Users\\Allen\\.nuget\\packages\\fody\\6.6.4\\fody.6.6.4.nupkg.sha512",
+    "C:\\Users\\Allen\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
+    "C:\\Users\\Allen\\.nuget\\packages\\propertychanged.fody\\4.1.0\\propertychanged.fody.4.1.0.nupkg.sha512",
+    "C:\\Users\\Allen\\.nuget\\packages\\system.text.json\\5.0.2\\system.text.json.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}

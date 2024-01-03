@@ -1,0 +1,11 @@
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\bin\Debug\net7.0-windows\GraphicsLibrary.deps.json
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\bin\Debug\net7.0-windows\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\bin\Debug\net7.0-windows\GraphicsLibrary.pdb
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\GraphicsLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\GraphicsLibrary.AssemblyInfoInputs.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\GraphicsLibrary.AssemblyInfo.cs
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\GraphicsLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\refint\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\GraphicsLibrary.pdb
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows\ref\GraphicsLibrary.dll

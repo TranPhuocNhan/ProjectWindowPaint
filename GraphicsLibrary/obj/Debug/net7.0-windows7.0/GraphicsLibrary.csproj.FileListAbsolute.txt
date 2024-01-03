@@ -1,0 +1,14 @@
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\bin\Debug\net7.0-windows7.0\GraphicsLibrary.deps.json
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\bin\Debug\net7.0-windows7.0\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\bin\Debug\net7.0-windows7.0\GraphicsLibrary.pdb
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.csproj.AssemblyReference.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.AssemblyInfoInputs.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.AssemblyInfo.cs
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.csproj.CoreCompileInputs.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.csproj.Fody.CopyLocal.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.csproj.Fody.RuntimeCopyLocal.cache
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\refint\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\GraphicsLibrary.pdb
+C:\Users\Allen\source\repos\Paint\GraphicsLibrary\obj\Debug\net7.0-windows7.0\ref\GraphicsLibrary.dll

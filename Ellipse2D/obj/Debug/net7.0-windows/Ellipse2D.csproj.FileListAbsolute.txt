@@ -1,0 +1,17 @@
+C:\Users\Allen\source\repos\Paint\Ellipse2D\bin\Debug\net7.0-windows\Ellipse2D.deps.json
+C:\Users\Allen\source\repos\Paint\Ellipse2D\bin\Debug\net7.0-windows\Ellipse2D.dll
+C:\Users\Allen\source\repos\Paint\Ellipse2D\bin\Debug\net7.0-windows\Ellipse2D.pdb
+C:\Users\Allen\source\repos\Paint\Ellipse2D\bin\Debug\net7.0-windows\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\Ellipse2D\bin\Debug\net7.0-windows\GraphicsLibrary.pdb
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.csproj.AssemblyReference.cache
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.AssemblyInfoInputs.cache
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.AssemblyInfo.cs
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.csproj.CoreCompileInputs.cache
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.csproj.Fody.CopyLocal.cache
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.csproj.Fody.RuntimeCopyLocal.cache
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.csproj.CopyComplete
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.dll
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\refint\Ellipse2D.dll
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\Ellipse2D.pdb
+C:\Users\Allen\source\repos\Paint\Ellipse2D\obj\Debug\net7.0-windows\ref\Ellipse2D.dll

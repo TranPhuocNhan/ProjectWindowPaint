@@ -1,0 +1,15 @@
+C:\Users\Allen\source\repos\Paint\Text2D\bin\Debug\net7.0-windows\Text2D.deps.json
+C:\Users\Allen\source\repos\Paint\Text2D\bin\Debug\net7.0-windows\Text2D.dll
+C:\Users\Allen\source\repos\Paint\Text2D\bin\Debug\net7.0-windows\Text2D.pdb
+C:\Users\Allen\source\repos\Paint\Text2D\bin\Debug\net7.0-windows\GraphicsLibrary.dll
+C:\Users\Allen\source\repos\Paint\Text2D\bin\Debug\net7.0-windows\GraphicsLibrary.pdb
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.csproj.AssemblyReference.cache
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.AssemblyInfoInputs.cache
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.AssemblyInfo.cs
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.csproj.CoreCompileInputs.cache
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.csproj.CopyComplete
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.dll
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\refint\Text2D.dll
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\Text2D.pdb
+C:\Users\Allen\source\repos\Paint\Text2D\obj\Debug\net7.0-windows\ref\Text2D.dll

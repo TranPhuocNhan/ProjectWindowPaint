@@ -1,0 +1,187 @@
+﻿<Fluent:RibbonWindow x:Class="Paint.MainWindow"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:local="clr-namespace:Paint"
+                    xmlns:Fluent="clr-namespace:Fluent;assembly=Fluent"
+                    mc:Ignorable="d"
+                    Title="MainWindow"
+                    Height="900" Width="1200"
+                    PreviewKeyDown="RibbonWindow_PreviewKeyDown"
+                    PreviewKeyUp="RibbonWindow_PreviewKeyUp"
+                    >
+   
+    <DockPanel LastChildFill="True">
+        <Fluent:Ribbon DockPanel.Dock="Top"
+                       x:Name="ribbon"
+                       Background="AliceBlue">
+            <Fluent:Ribbon.Menu>
+                <Fluent:Backstage Header="File">
+                    <Fluent:BackstageTabControl>
+                        <Fluent:BackstageTabItem Header="New"/>
+                        <Fluent:BackstageTabItem Header="New"/>
+                        <Fluent:BackstageTabItem Header="Save"/>
+                        <Fluent:BackstageTabItem Header="Save as"/>
+                        <Fluent:BackstageTabItem Header="Quit"/>
+                    </Fluent:BackstageTabControl>
+                </Fluent:Backstage>
+            </Fluent:Ribbon.Menu>
+
+            <Fluent:RibbonTabItem Header="Home">
+                <!--Clipboard-->
+                <Fluent:RibbonGroupBox Header="Clipboard">
+                    <Fluent:Button Header="Paste" Click="Paste_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/Paste.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Cut" Click="Cut_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/cut.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Copy" Click="Copy_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/copy.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <!--Tool-->
+                <Fluent:RibbonGroupBox Header="Tool">
+                    <Fluent:Button x:Name="btnSelect" Header="Select" Click="Select_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/selection.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Undo" Click="Undo_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/undo.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Redo" Click="Redo_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/redo.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Delete" Click="Delete_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/delete.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Fill">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/fill.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <!--Insert-->
+                <Fluent:RibbonGroupBox Header="Insert">
+                    <Fluent:Button Header="Image Insert" Click="Insert_Image_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Text Insert" Click="Text_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/text.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <!--Shape-->
+                <Fluent:RibbonGroupBox Header="Shape">
+                    <Fluent:Button Header="Line" Click="Line_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/diagonal-line.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Rectangle" Click="Rectangle_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/rectangle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Ellipse" Click="Ellipse_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/ellipse.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                    <Fluent:Button Header="Pen" Click="Pen_Click">
+                        <Fluent:Button.LargeIcon>
+                            <Image Source="/Images/pen.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:Button.LargeIcon>
+                    </Fluent:Button>
+                </Fluent:RibbonGroupBox>
+                <!--Style-->
+                <Fluent:RibbonGroupBox Header="Style" State="Collapsed">
+                    <Fluent:DropDownButton Header="Thick">
+                        <Fluent:DropDownButton.LargeIcon>
+                            <Image Source="/Images/line-thickness.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:DropDownButton.LargeIcon>
+
+                        <Fluent:RadioButton x:Name="onePx" Click="onePx_Click" Header="1px" />
+                        <Fluent:RadioButton x:Name="twoPx" Click="twoPx_Click" Header="2px" />
+                        <Fluent:RadioButton x:Name="fivePx" Click="fivePx_Click" Header="5px" />
+                        <Fluent:RadioButton x:Name="tenPx" Click="tenPx_Click" Header="10px"/>
+
+                    </Fluent:DropDownButton>
+                    <Separator />
+                    
+                    <Fluent:DropDownButton Header="Dashed style">
+                        <Fluent:DropDownButton.LargeIcon>
+                            <Image x:Name="lineStyleIcon" Source="/Images/dotline0.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </Fluent:DropDownButton.LargeIcon>
+
+                        <Fluent:ToggleButton x:Name="dotline0" Click="ToggleButton_Click">
+                            <Fluent:ToggleButton.Icon>
+                                <Image Source="/Images/dotline0.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </Fluent:ToggleButton.Icon>
+                        </Fluent:ToggleButton>
+
+                        <Fluent:ToggleButton x:Name="dotline1" Click="ToggleButton_Click">
+                            <Fluent:ToggleButton.Icon>
+                                <Image Source="/Images/dotline1.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </Fluent:ToggleButton.Icon>
+                        </Fluent:ToggleButton>
+
+                        <Fluent:ToggleButton x:Name="dotline2" Click="ToggleButton_Click">
+                            <Fluent:ToggleButton.Icon>
+                                <Image Source="/Images/dotline2.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </Fluent:ToggleButton.Icon>
+                        </Fluent:ToggleButton>
+
+                    </Fluent:DropDownButton>
+                </Fluent:RibbonGroupBox>
+                <!--Color-->
+                <Fluent:RibbonGroupBox Header="Color">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <Fluent:ColorGallery x:Name="colorGallery"
+                            SelectedColorChanged="ColorGallery_SelectedColorChanged">
+                        </Fluent:ColorGallery>
+                    </ScrollViewer>
+                </Fluent:RibbonGroupBox>
+                
+            </Fluent:RibbonTabItem>
+        </Fluent:Ribbon>
+
+        <Grid>
+            <Canvas  
+                IsHitTestVisible="True"
+                ClipToBounds="True"
+                x:Name="drawingCanvas" Background="White"
+                     PreviewMouseMove="drawingCanvas_PreviewMouseMove"
+                PreviewMouseUp="drawingCanvas_PreviewMouseUp"
+                >
+                
+            </Canvas>
+            <Canvas
+                ClipToBounds="True"
+                x:Name="drawingBorder"
+                Background="Transparent"
+                MouseDown="Canvas_MouseDown"
+                MouseMove="Canvas_MouseMove"
+                MouseUp="Canvas_MouseUp"/>
+        </Grid>
+
+
+    </DockPanel>
+</Fluent:RibbonWindow>
