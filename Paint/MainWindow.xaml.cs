@@ -23,12 +23,49 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using Fluent;
 using TextBox = System.Windows.Controls.TextBox;
 using Microsoft.Win32;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.Json;
+using Newtonsoft.Json;
 // TODO: Redo , Undo for Image
 namespace Paint
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+    public class MyImage
+    {
+        public Image mImage { get; set; }
+        public Point mPoint { get; set; } = new Point(0, 0);
+        public MyImage Clone()
+        {
+            MyImage myImage = new MyImage();
+            if (mImage != null)
+            {
+                myImage.mImage = new Image();
+
+                // Check if Source is not null before copying it
+                if (mImage.Source != null)
+                {
+                    myImage.mImage.Source = mImage.Source;
+                    myImage.mImage.Width = mImage.Width;
+                    myImage.mImage.Height = mImage.Height;
+
+                }
+
+                // Copy other properties as needed
+            }
+            var newPoint = new Point(mPoint.X + 10, mPoint.Y + 10);
+            myImage.mPoint = newPoint;
+            return myImage;
+        }
+    }
+    public class DrawingData
+    {
+        public List<IShape> _shape { get; set; }
+        public List<MyImage> _image { get; set; }
+    }
     public partial class MainWindow : Fluent.RibbonWindow
     {
         /// <summary>
@@ -37,6 +74,7 @@ namespace Paint
         /// 3 : Ellipse
         /// 4 : Pen
         /// 5 : Text
+        /// 6 : Fill
         /// 0 : Select
         /// </summary>
         public MainWindow()
@@ -77,6 +115,37 @@ namespace Paint
 
         MyImage _myImageClone = null;
 
+        private Color getColorAtPoint(Canvas canvas, Point point)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+
+            renderTargetBitmap.Render(canvas);
+
+            // Get the color of a pixel within the RenderTargetBitmap
+            byte[] pixels = new byte[4];
+            int stride = 4 * (int)canvas.ActualWidth;
+            renderTargetBitmap.CopyPixels(new Int32Rect((int)point.X, (int)point.Y, 1, 1), pixels, stride, 0);
+            Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+            return color;
+        }
+        public void validate(Canvas canvas, Point point, Stack<Point> points, Color old_color, Color new_color)
+        {
+          
+            Color color = getColorAtPoint(canvas, point);
+            if(color == old_color)
+            {
+                points.Push(point);
+                IShape preview = new Regtangle2D();
+                preview.StrokeThickness = strokeThickNess;
+                preview.Color = new_color;
+                preview.DashStyle = dashStyle;
+
+                preview.Points.Add(_start);
+                preview.Points.Add(new Point(_start.X + 10, _start.Y + 10));
+                drawingCanvas.Children.Add(preview.Draw());
+            }
+
+        }
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             isDrawing = true;
@@ -86,6 +155,12 @@ namespace Paint
 
             // Place the point where the mouse was clicked for the start point
             _start = e.GetPosition(drawingCanvas);
+            if(index == 6)
+            {
+                
+            }
+            
+
         }
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
@@ -276,7 +351,6 @@ namespace Paint
             }
 
         }
-
         private void HandlerPreviewMouseDownImage(object sender, MouseButtonEventArgs e)
         {
             _selectedImage = sender as Image;
@@ -291,7 +365,6 @@ namespace Paint
             offset.X -= Canvas.GetLeft(_selectedImage);
             drawingCanvas.CaptureMouse();
         }
-
         private void HandlerPreviewMouseDownLine(object sender, MouseButtonEventArgs e)
         {
             _currentUIElement = sender as UIElement;
@@ -544,7 +617,6 @@ namespace Paint
                 }
             }
         }
-
         private void Paste_Click(object sender, RoutedEventArgs e)
         {
             if(_clone != null)
@@ -558,7 +630,6 @@ namespace Paint
                 reDraw();
             }
         }
-
         private void Cut_Click(object sender, RoutedEventArgs e)
         {
             if (_currentUIElement != null)
@@ -588,12 +659,10 @@ namespace Paint
                 }
             }
         }
-
         private void Text_Click(object sender, RoutedEventArgs e)
         {
             index = 5;
         }
-
         private void Insert_Image_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -633,6 +702,174 @@ namespace Paint
                 reDraw();
             }
         }
+        private void Fill_Click(object sender, RoutedEventArgs e)
+        {
+            index = 6;
+        }
+        private void BackStageSave_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            backStage.IsOpen = false;
+
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Filter = "Binary File (*.bin)|*.bin";
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Title = "Save as Binary File";
+
+            // Create the data to save
+            DrawingData drawingData = new DrawingData();
+            drawingData._shape = _shape;
+            drawingData._image = _image;
+
+            if(saveFileDialog.ShowDialog() == true)
+            {
+                SaveCanvasToBin(drawingData, saveFileDialog.FileName);
+            }
+
+        }
+        private void SaveCanvasToBin(DrawingData drawingData, string fileName)
+        {
+            using (FileStream stream = new FileStream(fileName, FileMode.CreateNew)) { };
+
+            string json = JsonConvert.SerializeObject(drawingData, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            File.WriteAllText(fileName, json);
+        }
+        private void BackStageLoad_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Binary File (*.bin)|*.bin";
+            openFileDialog.RestoreDirectory = true;
+            if(openFileDialog.ShowDialog() == true)
+            {
+                LoadCanvasFromBin(openFileDialog.FileName);
+            }
+        }
+        private void LoadCanvasFromBin(string fileName)
+        {
+            string json = File.ReadAllText(fileName);
+            DrawingData drawingData = JsonConvert.DeserializeObject<DrawingData>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+            _shape = drawingData._shape;
+            _image = drawingData._image;
+            reDraw();
+        }
+        private void BackStageSaveAs_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            backStage.IsOpen = false;
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Filter = "PNG Image (*.png)|*.png|JPG Image (*.jpg)|*.jpg|Bitmap Image (*.bmp)|*.bmp";
+            saveFileDialog.RestoreDirectory = true;
+            saveFileDialog.Title = "Save as PNG";
+
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                switch(saveFileDialog.FilterIndex)
+                {
+                    case 1:
+                        SaveCanvasToPng(drawingCanvas, saveFileDialog.FileName);
+                        break;
+                    case 2:
+                        SaveCanvasToJpg(drawingCanvas, saveFileDialog.FileName);
+                        break;
+                    case 3:
+                        SaveCanvasToBmp(drawingCanvas, saveFileDialog.FileName);
+                        break;
+                }
+            }
+        }
+        public void SaveCanvasToPng(Canvas canvas, string fileName)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(canvas);
+
+            BitmapEncoder pngBitmapEncoder = new PngBitmapEncoder();
+            pngBitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+            using (var ms = new System.IO.MemoryStream())
+            {
+                pngBitmapEncoder.Save(ms);
+                ms.Close();
+                System.IO.File.WriteAllBytes(fileName, ms.ToArray());
+            }
+        }
+        public void SaveCanvasToJpg(Canvas canvas, string fileName)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(canvas);
+
+            BitmapEncoder bitmapEncoder = new JpegBitmapEncoder();
+            bitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+            using (var ms = new System.IO.MemoryStream())
+            {
+                bitmapEncoder.Save(ms);
+                ms.Close();
+                System.IO.File.WriteAllBytes(fileName, ms.ToArray());
+            }
+        }
+        public void SaveCanvasToBmp(Canvas canvas, string fileName)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+            renderTargetBitmap.Render(canvas);
+
+            BitmapEncoder bmpBitmapEncoder = new BmpBitmapEncoder();
+            bmpBitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+            using (var ms = new System.IO.MemoryStream())
+            {
+                bmpBitmapEncoder.Save(ms);
+                ms.Close();
+                System.IO.File.WriteAllBytes(fileName, ms.ToArray());
+            }
+        }
+        private void BackStageQuit_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var result = MessageBox.Show("Do you want to quit?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if(result == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+        int _startLoad = 2;
+        private void SliderValueChanged_Handler(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if(_startLoad != 0)
+            {
+                _startLoad--;
+                return;
+            }
+            int value = (int)(sender as Slider).Value;
+            var st = new ScaleTransform();
+            if(value == 50)
+            {
+                st.ScaleX /= 2;
+                st.ScaleY /= 2;
+                drawingCanvas.RenderTransform = st;
+            }
+            if(value == 100)
+            {
+                st.ScaleX = 1;
+                st.ScaleY = 1;
+                drawingCanvas.RenderTransform = st;
+            }
+            if(value == 150)
+            {
+                st.ScaleX *= 1.5;
+                st.ScaleY *= 1.5;
+                drawingCanvas.RenderTransform = st;
+            }
+            if(value == 200)
+            {
+                st.ScaleX *= 2;
+                st.ScaleY *= 2;
+                drawingCanvas.RenderTransform = st;
+            }
+        }
 
         private void Select_Click(object sender, RoutedEventArgs e)
         {
@@ -656,31 +893,5 @@ namespace Paint
         }
 
     }
-    class MyImage
-    {
-        public Image mImage { get; set; }
-        public Point mPoint { get; set; } = new Point(0, 0);
-        public MyImage Clone()
-        {
-            MyImage myImage = new MyImage();
-            if (mImage != null)
-            {
-                myImage.mImage = new Image();
 
-                // Check if Source is not null before copying it
-                if (mImage.Source != null)
-                {
-                    myImage.mImage.Source = mImage.Source;
-                    myImage.mImage.Width = mImage.Width;
-                    myImage.mImage.Height = mImage.Height;
-
-                }
-
-                // Copy other properties as needed
-            }
-            var newPoint = new Point(mPoint.X + 10, mPoint.Y + 10);
-            myImage.mPoint = newPoint;
-            return myImage;
-        }
-    }
 }

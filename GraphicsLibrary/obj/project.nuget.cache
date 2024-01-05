@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "7VI5SWPGBhwbz4IxHAuUINCid9r1ZGlB/aZUfitAAhHYfBvelX7q4InCvxYYvhBoL93tZKWWFIHQrJ8lcRX+Iw==",
+  "dgSpecHash": "EXFtDv0bhuSZvCOfTUStvC8y81LKgUkYNx4bWgMY4akNkEi9zZ7b3g8tWlw2yqBmEjIN/x86UBi7JKTMeCmNtg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Allen\\source\\repos\\Paint\\GraphicsLibrary\\GraphicsLibrary.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,7 @@
     "C:\\Users\\Allen\\.nuget\\packages\\fluent.ribbon\\10.0.4\\fluent.ribbon.10.0.4.nupkg.sha512",
     "C:\\Users\\Allen\\.nuget\\packages\\fody\\6.6.4\\fody.6.6.4.nupkg.sha512",
     "C:\\Users\\Allen\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
+    "C:\\Users\\Allen\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
     "C:\\Users\\Allen\\.nuget\\packages\\propertychanged.fody\\4.1.0\\propertychanged.fody.4.1.0.nupkg.sha512",
     "C:\\Users\\Allen\\.nuget\\packages\\system.text.json\\5.0.2\\system.text.json.5.0.2.nupkg.sha512"
   ],

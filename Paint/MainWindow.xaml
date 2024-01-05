@@ -11,19 +11,22 @@
                     PreviewKeyDown="RibbonWindow_PreviewKeyDown"
                     PreviewKeyUp="RibbonWindow_PreviewKeyUp"
                     >
+    <Fluent:RibbonWindow.Resources>
+        <local:PercentConverter x:Key="percentConverter"/>
+    </Fluent:RibbonWindow.Resources>
    
     <DockPanel LastChildFill="True">
         <Fluent:Ribbon DockPanel.Dock="Top"
                        x:Name="ribbon"
                        Background="AliceBlue">
             <Fluent:Ribbon.Menu>
-                <Fluent:Backstage Header="File">
+                <Fluent:Backstage Header="File"  x:Name="backStage">
                     <Fluent:BackstageTabControl>
                         <Fluent:BackstageTabItem Header="New"/>
-                        <Fluent:BackstageTabItem Header="New"/>
-                        <Fluent:BackstageTabItem Header="Save"/>
-                        <Fluent:BackstageTabItem Header="Save as"/>
-                        <Fluent:BackstageTabItem Header="Quit"/>
+                        <Fluent:BackstageTabItem Header="Load" MouseDown ="BackStageLoad_MouseDown"/>
+                        <Fluent:BackstageTabItem Header="Save" MouseDown="BackStageSave_MouseDown"/>
+                        <Fluent:BackstageTabItem Header="Save as" MouseDown="BackStageSaveAs_MouseDown"/>
+                        <Fluent:BackstageTabItem Header="Quit" MouseDown="BackStageQuit_MouseDown"/>
                     </Fluent:BackstageTabControl>
                 </Fluent:Backstage>
             </Fluent:Ribbon.Menu>
@@ -69,7 +72,7 @@
                             <Image Source="/Images/delete.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Fill">
+                    <Fluent:Button Header="Fill" Click="Fill_Click">
                         <Fluent:Button.LargeIcon>
                             <Image Source="/Images/fill.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
@@ -159,7 +162,22 @@
                         </Fluent:ColorGallery>
                     </ScrollViewer>
                 </Fluent:RibbonGroupBox>
-                
+                <!--Slider-->
+                <Fluent:RibbonGroupBox Header="Slider">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ElementName=scaleSlider, Path=Value, Converter={StaticResource percentConverter}}" 
+                                   d:Text="Value%"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="5"/>
+                        <Slider x:Name="scaleSlider" Width="100" Margin="5 20"
+                                Maximum="200" Minimum="50"
+                                IsSnapToTickEnabled="True"
+                                TickFrequency="50"
+                                Value="100"
+                                ValueChanged="SliderValueChanged_Handler"/>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
@@ -168,9 +186,8 @@
                 IsHitTestVisible="True"
                 ClipToBounds="True"
                 x:Name="drawingCanvas" Background="White"
-                     PreviewMouseMove="drawingCanvas_PreviewMouseMove"
-                PreviewMouseUp="drawingCanvas_PreviewMouseUp"
-                >
+                PreviewMouseMove="drawingCanvas_PreviewMouseMove"
+                PreviewMouseUp="drawingCanvas_PreviewMouseUp">
                 
             </Canvas>
             <Canvas

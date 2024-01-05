@@ -36,3 +36,5 @@ C:\Users\Allen\source\repos\Paint\Paint\obj\Debug\net7.0-windows\refint\Paint.dl
 C:\Users\Allen\source\repos\Paint\Paint\obj\Debug\net7.0-windows\Paint.pdb
 C:\Users\Allen\source\repos\Paint\Paint\obj\Debug\net7.0-windows\Paint.genruntimeconfig.cache
 C:\Users\Allen\source\repos\Paint\Paint\obj\Debug\net7.0-windows\ref\Paint.dll
+C:\Users\Allen\source\repos\Paint\Paint\bin\Debug\net7.0-windows\Newtonsoft.Json.dll
+C:\Users\Allen\source\repos\Paint\Paint\obj\Debug\net7.0-windows\GeneratedInternalTypeHelper.g.cs

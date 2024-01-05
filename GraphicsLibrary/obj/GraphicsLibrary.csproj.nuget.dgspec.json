@@ -48,6 +48,10 @@
               "target": "Package",
               "version": "[10.0.4, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "PropertyChanged.Fody": {
               "target": "Package",
               "version": "[4.1.0, )"
