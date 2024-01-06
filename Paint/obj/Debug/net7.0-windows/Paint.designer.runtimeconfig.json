@@ -13,8 +13,7 @@
     ],
     "additionalProbingPaths": [
       "C:\\Users\\Allen\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\Allen\\.nuget\\packages",
-      "D:\\Telerik\\ToolboxNuGetPackages"
+      "C:\\Users\\Allen\\.nuget\\packages"
     ],
     "configProperties": {
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true

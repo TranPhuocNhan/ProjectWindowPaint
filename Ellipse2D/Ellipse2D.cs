@@ -26,11 +26,12 @@ namespace Ellipse2DShape
             ellipse.Stroke = new SolidColorBrush(Color);
             ellipse.StrokeThickness = StrokeThickness;
             ellipse.StrokeDashArray = DoubleCollection.Parse(DashStyle);
-            ellipse.Fill = new SolidColorBrush(Color);
             // Position for the ellipse, get the minimum value of X and Y
             // Because the ellipse is drawn from the top left corner
             Canvas.SetLeft(ellipse, Math.Min(Points[0].X, Points[1].X));
             Canvas.SetTop(ellipse, Math.Min(Points[0].Y, Points[1].Y));
+            
+            Canvas.SetZIndex(ellipse, ZIndex);  
 
             return ellipse;
         }

@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Images\copy.png" />
     <None Remove="Images\cut.png" />
+    <None Remove="Images\delete-button.png" />
     <None Remove="Images\delete.png" />
     <None Remove="Images\diagonal-line.png" />
     <None Remove="Images\dot-line.png" />
@@ -24,6 +25,7 @@
     <None Remove="Images\palette.png" />
     <None Remove="Images\paste.png" />
     <None Remove="Images\pen.png" />
+    <None Remove="Images\plus.png" />
     <None Remove="Images\rectangle.png" />
     <None Remove="Images\redo.png" />
     <None Remove="Images\selection.png" />
@@ -49,6 +51,7 @@
   <ItemGroup>
     <Resource Include="Images\copy.png" />
     <Resource Include="Images\cut.png" />
+    <Resource Include="Images\delete-button.png" />
     <Resource Include="Images\delete.png" />
     <Resource Include="Images\diagonal-line.png" />
     <Resource Include="Images\dot-line.png" />
@@ -63,6 +66,7 @@
     <Resource Include="Images\palette.png" />
     <Resource Include="Images\paste.png" />
     <Resource Include="Images\pen.png" />
+    <Resource Include="Images\plus.png" />
     <Resource Include="Images\rectangle.png" />
     <Resource Include="Images\redo.png" />
     <Resource Include="Images\selection.png" />

@@ -32,6 +32,8 @@ namespace Text2DShape
             Canvas.SetLeft(text, Math.Min(Points[0].X, Points[1].X));
             Canvas.SetTop(text, Math.Min(Points[0].Y, Points[1].Y));
 
+            Canvas.SetZIndex(text, ZIndex);
+
             return text;
         }
 

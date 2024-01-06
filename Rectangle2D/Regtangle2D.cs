@@ -26,11 +26,14 @@ namespace Rectangle2DShape
             rectangle.Stroke = new SolidColorBrush(Color);
             rectangle.StrokeThickness = StrokeThickness;
             rectangle.StrokeDashArray = DoubleCollection.Parse(DashStyle);
-            rectangle.Fill = new SolidColorBrush(Color);
+            
+            
             // Position for the rectangle, get the minimum value of X and Y
             // Because the rectangle is drawn from the top left corner
             Canvas.SetLeft(rectangle, Math.Min(Points[0].X, Points[1].X));
             Canvas.SetTop(rectangle, Math.Min(Points[0].Y, Points[1].Y));
+            Canvas.SetZIndex(rectangle, ZIndex);
+
 
             return rectangle;
         }

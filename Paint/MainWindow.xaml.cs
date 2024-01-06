@@ -27,6 +27,9 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 // TODO: Redo , Undo for Image
 namespace Paint
 {
@@ -65,6 +68,35 @@ namespace Paint
     {
         public List<IShape> _shape { get; set; }
         public List<MyImage> _image { get; set; }
+    }
+    public class Layer : INotifyPropertyChanged
+    {
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+        private int _zIndex;
+        public int ZIndex
+        {
+            get { return _zIndex; }
+            set
+            {
+                _zIndex = value;
+                OnPropertyChanged("ZIndex");
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
     public partial class MainWindow : Fluent.RibbonWindow
     {
@@ -115,6 +147,23 @@ namespace Paint
 
         MyImage _myImageClone = null;
 
+        // Zoom variable
+        int _startLoad = 2;
+
+        // ZIndex
+        int _totalIndex = 0;
+        int _currentZIndex = 0;
+
+        // List layer
+        ObservableCollection<Layer> _layers = new ObservableCollection<Layer>();
+
+        private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            _layers.Add(new Layer() { Name = "Layer", ZIndex = _totalIndex++ });
+            myListLayer.SelectedItem = _layers.First();
+            myListLayer.ItemsSource = _layers;
+
+        }
         private Color getColorAtPoint(Canvas canvas, Point point)
         {
             RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
@@ -155,15 +204,11 @@ namespace Paint
 
             // Place the point where the mouse was clicked for the start point
             _start = e.GetPosition(drawingCanvas);
-            if(index == 6)
-            {
-                
-            }
-            
 
         }
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
+            positionXY.Text = e.GetPosition(drawingCanvas).ToString();
             if (isDrawing)
             {
                 _end = e.GetPosition(drawingCanvas);
@@ -180,6 +225,8 @@ namespace Paint
                     preview.DashStyle = dashStyle;
                     preview.Points.Add(_start);
                     preview.Points.Add(_end);
+                    preview.ZIndex = _currentZIndex;
+
                     drawingCanvas.Children.Add(preview.Draw());
                 }
                 if (index == 2)
@@ -188,9 +235,10 @@ namespace Paint
                     preview.StrokeThickness = strokeThickNess;
                     preview.Color = color;
                     preview.DashStyle = dashStyle;
-
                     preview.Points.Add(_start);
                     preview.Points.Add(_end);
+                    preview.ZIndex = _currentZIndex;
+
                     drawingCanvas.Children.Add(preview.Draw());
                 }
                 if (index == 3)
@@ -199,9 +247,10 @@ namespace Paint
                     preview.StrokeThickness = strokeThickNess;
                     preview.Color = color;
                     preview.DashStyle = dashStyle;
-
                     preview.Points.Add(_start);
                     preview.Points.Add(_end);
+                    preview.ZIndex = _currentZIndex;
+
                     drawingCanvas.Children.Add(preview.Draw());
                 }
                 if(index == 4)
@@ -210,9 +259,10 @@ namespace Paint
                     preview.StrokeThickness = strokeThickNess;
                     preview.Color = color;
                     preview.DashStyle = dashStyle;
-
                     preview.Points.Add(_start);
                     preview.Points.Add(_end);
+                    preview.ZIndex = _currentZIndex;
+
                     _start = _end;
                     drawingCanvas.Children.Add(preview.Draw());
                     _shape.Add(preview);
@@ -224,9 +274,10 @@ namespace Paint
                     preview.StrokeThickness = strokeThickNess;
                     preview.Color = color;
                     preview.DashStyle = dashStyle;
-
                     preview.Points.Add(_start);
                     preview.Points.Add(_end);
+                    preview.ZIndex = _currentZIndex;
+
                     drawingCanvas.Children.Add(preview.Draw());
                 }
             }
@@ -245,6 +296,7 @@ namespace Paint
                 shape.StrokeThickness = strokeThickNess;
                 shape.Color = color;
                 shape.DashStyle = dashStyle;
+                shape.ZIndex = _currentZIndex;
                 _shape.Add(shape);
                 _redoUndo.Add(shape);
             }
@@ -256,6 +308,7 @@ namespace Paint
                 shape.StrokeThickness = strokeThickNess;
                 shape.Color = color;
                 shape.DashStyle = dashStyle;
+                shape.ZIndex = _currentZIndex;
                 _shape.Add(shape);
                 _redoUndo.Add(shape);
             }
@@ -267,6 +320,7 @@ namespace Paint
                 shape.StrokeThickness = strokeThickNess;
                 shape.Color = color;
                 shape.DashStyle = dashStyle;
+                shape.ZIndex = _currentZIndex;
                 _shape.Add(shape);
                 _redoUndo.Add(shape);
             }
@@ -278,6 +332,7 @@ namespace Paint
                 shape.StrokeThickness = strokeThickNess;
                 shape.Color = color;
                 shape.DashStyle = dashStyle;
+                shape.ZIndex = _currentZIndex;
                 _shape.Add(shape);
                 _redoUndo.Add(shape);
 
@@ -370,6 +425,7 @@ namespace Paint
             _currentUIElement = sender as UIElement;
             _selectedShape = sender as UIElement;
             var _line = _selectedShape as Line;
+
             AdornerLayer.GetAdornerLayer(drawingCanvas).Add(new ResizeAdorner(_selectedShape));
 
             offset = e.GetPosition(drawingCanvas);
@@ -835,7 +891,6 @@ namespace Paint
                 Application.Current.Shutdown();
             }
         }
-        int _startLoad = 2;
         private void SliderValueChanged_Handler(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if(_startLoad != 0)
@@ -871,6 +926,49 @@ namespace Paint
             }
         }
 
+        private void AddLayer_Click(object sender, RoutedEventArgs e)
+        {
+            
+            _layers.Add(new Layer() { Name = "Layer", ZIndex = _totalIndex++ });
+            if (_layers.Count == 1)
+            {
+                myListLayer.SelectedItem = _layers.First();
+            }
+        }
+
+        private void DeleteLayer_Click(object sender, RoutedEventArgs e)
+        {
+            if(_layers.Count > 0)
+            {
+                if(myListLayer.SelectedIndex != -1)
+                {
+                    for(int i = _shape.Count -1; i >= 0; i--)
+                    {
+                        IShape shape= _shape[i];
+                        if(shape.ZIndex == _layers[myListLayer.SelectedIndex].ZIndex)
+                        {
+                            _shape.Remove(shape);
+                        }
+                    }
+                    reDraw();
+                    _layers.RemoveAt(myListLayer.SelectedIndex);
+                }
+                if(_layers.Count == 0)
+                {
+                    _totalIndex = 0;
+                }
+            }
+        }
+
+        private void myListLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(myListLayer.SelectedIndex != -1)
+            {
+                _currentZIndex = _layers[myListLayer.SelectedIndex].ZIndex;
+            }
+        }
+
+
         private void Select_Click(object sender, RoutedEventArgs e)
         {
 
@@ -889,7 +987,7 @@ namespace Paint
                 Canvas.SetZIndex(drawingCanvas, 0);
                 Canvas.SetZIndex(drawingBorder, 1);
             }
-
+            
         }
 
     }

@@ -3,6 +3,7 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using GraphicsLibrary;
 using System;
+using System.Windows.Controls;
 
 namespace Line2DShape
 {
@@ -22,6 +23,8 @@ namespace Line2DShape
             l.StrokeThickness = StrokeThickness;
             l.StrokeDashArray = DoubleCollection.Parse(DashStyle);
             l.Fill = new SolidColorBrush(Color);
+
+            Canvas.SetZIndex(l, ZIndex);
             // TODO: add DashStyle here
             return l;
         }

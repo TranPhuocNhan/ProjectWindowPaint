@@ -10,6 +10,7 @@
                     Height="900" Width="1200"
                     PreviewKeyDown="RibbonWindow_PreviewKeyDown"
                     PreviewKeyUp="RibbonWindow_PreviewKeyUp"
+                     Loaded="RibbonWindow_Loaded"
                     >
     <Fluent:RibbonWindow.Resources>
         <local:PercentConverter x:Key="percentConverter"/>
@@ -178,11 +179,34 @@
                                 ValueChanged="SliderValueChanged_Handler"/>
                     </StackPanel>
                 </Fluent:RibbonGroupBox>
+                <!--Layer-->
+                <Fluent:RibbonGroupBox Header="Layer">
+                    <ListBox x:Name="myListLayer" SelectionChanged="myListLayer_SelectionChanged" Width="80" Height="70">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock>
+                                        <Run Text="{Binding Path=Name}"/> - <Run Text="{Binding Path=ZIndex}"/>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <StackPanel Orientation="Vertical">
+                        <Button Click="AddLayer_Click" Content="Add" Margin="5" Padding="5" Background="AliceBlue"/>
+                        <Button Click="DeleteLayer_Click" Content="Delete"  Margin="5 0 5 5" Padding="5" Background="AliceBlue"/>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
-        <Grid>
-            <Canvas  
+        <Grid x:Name="myGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="50"/>
+            </Grid.RowDefinitions>
+            
+            <Canvas  Grid.Row="0"
                 IsHitTestVisible="True"
                 ClipToBounds="True"
                 x:Name="drawingCanvas" Background="White"
@@ -190,13 +214,20 @@
                 PreviewMouseUp="drawingCanvas_PreviewMouseUp">
                 
             </Canvas>
-            <Canvas
+            <Canvas  Grid.Row="0"
                 ClipToBounds="True"
                 x:Name="drawingBorder"
                 Background="Transparent"
                 MouseDown="Canvas_MouseDown"
                 MouseMove="Canvas_MouseMove"
                 MouseUp="Canvas_MouseUp"/>
+
+            <TextBlock x:Name="positionXY"
+                Grid.Row="1" 
+                Text="My text"
+                       Margin="10 0 0 0"
+                       FontWeight="Bold"
+                       VerticalAlignment="Center"/>
         </Grid>
 
 

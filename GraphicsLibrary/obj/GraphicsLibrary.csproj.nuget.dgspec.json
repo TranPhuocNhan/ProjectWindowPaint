@@ -13,13 +13,9 @@
         "packagesPath": "C:\\Users\\Allen\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Allen\\source\\repos\\Paint\\GraphicsLibrary\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "D:\\Telerik\\ToolboxNuGetPackages"
-        ],
         "configFilePaths": [
           "C:\\Users\\Allen\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Telerik UI for WPF.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0-windows7.0"

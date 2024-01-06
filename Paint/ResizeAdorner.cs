@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,13 +21,13 @@ namespace Paint
 
             thumb1 = new Thumb()
             {
-                Background = Brushes.Black,
+                Background = Brushes.Coral,
                 Width = 10,
                 Height = 10,
             };
             thumb2 = new Thumb()
             {
-                Background = Brushes.Black,
+                Background = Brushes.Coral,
                 Width = 10,
                 Height = 10,
             };
@@ -55,8 +56,8 @@ namespace Paint
         }
         protected override Size ArrangeOverride(Size finalSize)
         {
-            thumb1.Arrange(new Rect(0,0, 10, 10));
-            thumb2.Arrange(new Rect(AdornedElement.DesiredSize.Width, AdornedElement.DesiredSize.Height, 10, 10));
+            thumb1.Arrange(new Rect(-5, -5, 10, 10));
+            thumb2.Arrange(new Rect(AdornedElement.DesiredSize.Width - 5, AdornedElement.DesiredSize.Height - 5, 10, 10));
 
             return base.ArrangeOverride(finalSize);
         }

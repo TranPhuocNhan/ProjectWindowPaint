@@ -14,6 +14,7 @@ namespace GraphicsLibrary
         public string DashStyle { get; set; } = "1, 0";
         public int hashCode { get; set; }
         public string Text { get; set; } = "Hello World!";
+        public int ZIndex { get; set; } = 0;
         public abstract void HandleShiftMode();
         public abstract UIElement Draw();
         public abstract IShape Clone();
