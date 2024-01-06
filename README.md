@@ -43,7 +43,7 @@ Expected work hours: 10 hours (Not including Learning / Studying / Debugging)
     
     Upgrade: Only redraw the needed region, no fullscreen redraw
     
-5. Adding Layers support
+5. Adding Layers support (Done)
 6. Select a single element for editing again
     
     Transforming horizontally and vertically
