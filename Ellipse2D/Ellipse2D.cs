@@ -26,6 +26,10 @@ namespace Ellipse2DShape
             ellipse.Stroke = new SolidColorBrush(Color);
             ellipse.StrokeThickness = StrokeThickness;
             ellipse.StrokeDashArray = DoubleCollection.Parse(DashStyle);
+            if(isFill)
+            {
+                ellipse.Fill = new SolidColorBrush(Color);
+            }
             // Position for the ellipse, get the minimum value of X and Y
             // Because the ellipse is drawn from the top left corner
             Canvas.SetLeft(ellipse, Math.Min(Points[0].X, Points[1].X));

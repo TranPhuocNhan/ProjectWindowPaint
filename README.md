@@ -55,5 +55,5 @@ Expected work hours: 10 hours (Not including Learning / Studying / Debugging)
 7. Zooming (Done)
 8. Cut / Copy / Paste (Done)
 9. Undo, Redo (Command) (Done)
-10. Fill color by boundaries
+10. Fill color by boundaries (Done)
 11. Delete shape (Done)

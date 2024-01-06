@@ -216,11 +216,17 @@
             </Canvas>
             <Canvas  Grid.Row="0"
                 ClipToBounds="True"
+                x:Name="colorCanvas"
+                Background="Transparent"/>
+            <Canvas  Grid.Row="0"
+                ClipToBounds="True"
                 x:Name="drawingBorder"
                 Background="Transparent"
                 MouseDown="Canvas_MouseDown"
                 MouseMove="Canvas_MouseMove"
                 MouseUp="Canvas_MouseUp"/>
+
+
 
             <TextBlock x:Name="positionXY"
                 Grid.Row="1" 

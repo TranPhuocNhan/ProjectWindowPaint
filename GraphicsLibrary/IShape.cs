@@ -15,6 +15,7 @@ namespace GraphicsLibrary
         public int hashCode { get; set; }
         public string Text { get; set; } = "Hello World!";
         public int ZIndex { get; set; } = 0;
+        public bool isFill { get; set; } = false;
         public abstract void HandleShiftMode();
         public abstract UIElement Draw();
         public abstract IShape Clone();

@@ -30,6 +30,7 @@ using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows.Media.Media3D;
 // TODO: Redo , Undo for Image
 namespace Paint
 {
@@ -173,9 +174,92 @@ namespace Paint
             // Get the color of a pixel within the RenderTargetBitmap
             byte[] pixels = new byte[4];
             int stride = 4 * (int)canvas.ActualWidth;
+            
             renderTargetBitmap.CopyPixels(new Int32Rect((int)point.X, (int)point.Y, 1, 1), pixels, stride, 0);
             Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
             return color;
+        }
+        private double getLeftPoint(Canvas canvas, Point point, Color old_color, Color new_color)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+
+            renderTargetBitmap.Render(canvas);
+
+            // Get the color of a pixel within the RenderTargetBitmap
+            byte[] pixels = new byte[4];
+            int stride = 4 * (int)canvas.ActualWidth;
+            double xLeft = point.X;
+            // Get left point
+            while (xLeft > 0)
+            {
+                xLeft -= 1;
+                renderTargetBitmap.CopyPixels(new Int32Rect((int)xLeft, (int)point.Y, 1, 1), pixels, stride, 0);
+                Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+                if (color != old_color) break;
+            }
+            return xLeft;
+        }
+        private double getRightPoint(Canvas canvas, Point point, Color old_color, Color new_color)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+
+            renderTargetBitmap.Render(canvas);
+
+            // Get the color of a pixel within the RenderTargetBitmap
+            byte[] pixels = new byte[4];
+            int stride = 4 * (int)canvas.ActualWidth;
+            double xRight = point.X;
+            // Get right point
+            while (xRight < canvas.ActualWidth - 1)
+            {
+                xRight += 1;
+                renderTargetBitmap.CopyPixels(new Int32Rect((int)xRight, (int)point.Y, 1, 1), pixels, stride, 0);
+                Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+                if (color != old_color) break;
+            }
+            return xRight;
+        }
+        private void fillColorTopToBottomPoint(Canvas canvas, Point point, Color old_color, Color new_color)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)canvas.ActualWidth, (int)canvas.ActualHeight, 96d, 96d, PixelFormats.Pbgra32);
+
+            renderTargetBitmap.Render(canvas);
+
+            // Get the color of a pixel within the RenderTargetBitmap
+            byte[] pixels = new byte[4];
+            int stride = 4 * (int)canvas.ActualWidth;
+            double yTop = point.Y;
+            double yBottom = point.Y;
+            Point top = new Point(0, 0);
+            Point bottom = new Point(0, 0);
+            // Get top point
+            while (yTop > 0)
+            {
+                yTop -= 1;
+                renderTargetBitmap.CopyPixels(new Int32Rect((int)point.X, (int)yTop, 1, 1), pixels, stride, 0);
+                Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+                if (color != old_color) break;
+            }
+            top.X = point.X;
+            top.Y = yTop;
+            // Get bottom point
+            while (yBottom <= canvas.ActualHeight)
+            {
+                yBottom += 1;
+                renderTargetBitmap.CopyPixels(new Int32Rect((int)point.X, (int)yBottom, 1, 1), pixels, stride, 0);
+                Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
+                if (color != old_color) break;
+            }
+            bottom.X = point.X + 100;
+            bottom.Y = yBottom;
+
+            IShape fillColor = new Regtangle2D();
+            fillColor.StrokeThickness = strokeThickNess;
+            fillColor.Color = new_color;
+            fillColor.isFill = true;
+            fillColor.Points.Add(top);
+            fillColor.Points.Add(bottom);
+            colorCanvas.Children.Add(fillColor.Draw());
         }
         public void validate(Canvas canvas, Point point, Stack<Point> points, Color old_color, Color new_color)
         {
@@ -205,6 +289,23 @@ namespace Paint
             // Place the point where the mouse was clicked for the start point
             _start = e.GetPosition(drawingCanvas);
 
+            if(index == 6)
+            {
+                Color old_color = getColorAtPoint(drawingCanvas, _start);
+                Color new_color = color;
+                double left = 0;
+                double right = 0;
+                left = getLeftPoint(drawingCanvas, _start, old_color, new_color);
+                right = getRightPoint(drawingCanvas, _start, old_color, new_color);
+                Debug.WriteLine(left.ToString());
+                Debug.WriteLine(right.ToString());
+                for(double i = left; i <= right; i++)
+                {
+                    Point point = new Point((int)i, _start.Y);
+                    fillColorTopToBottomPoint(drawingCanvas, point, old_color, new_color);
+
+                }
+            }
         }
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
