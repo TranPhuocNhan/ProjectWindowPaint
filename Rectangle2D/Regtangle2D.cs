@@ -61,5 +61,10 @@ namespace Rectangle2DShape
 
             return shape;
         }
+
+        public override IShape CloneShape()
+        {
+             return new Regtangle2D();
+        }
     }
 }

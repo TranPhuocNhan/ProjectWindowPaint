@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rectangle2D", "Rectangle2D\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ellipse2D", "Ellipse2D\Ellipse2D.csproj", "{39FF04F4-324B-4E68-8329-0049347C1A77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Text2D", "Text2D\Text2D.csproj", "{156F0CF5-758B-4343-BED6-C1350D55F5B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Text2D", "Text2D\Text2D.csproj", "{156F0CF5-758B-4343-BED6-C1350D55F5B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pen2D", "Pen2D\Pen2D.csproj", "{951CB97D-1EAC-4C70-B551-DED46F6AB5DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{156F0CF5-758B-4343-BED6-C1350D55F5B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{156F0CF5-758B-4343-BED6-C1350D55F5B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{156F0CF5-758B-4343-BED6-C1350D55F5B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{951CB97D-1EAC-4C70-B551-DED46F6AB5DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{951CB97D-1EAC-4C70-B551-DED46F6AB5DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{951CB97D-1EAC-4C70-B551-DED46F6AB5DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{951CB97D-1EAC-4C70-B551-DED46F6AB5DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -52,5 +52,9 @@ namespace Text2DShape
             throw new NotImplementedException();
         }
 
+        public override IShape CloneShape()
+        {
+            return new Text2D();
+        }
     }
 }

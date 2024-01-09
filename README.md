@@ -19,7 +19,7 @@ Expected work hours: 10 hours (Not including Learning / Studying / Debugging)
 
 # Core requirements (5 points)
 
-1. Dynamically load all graphic objects that can be drawn from external DLL files
+1. Dynamically load all graphic objects that can be drawn from external DLL files (Done)
 2. The user can choose which object to draw (Done)
 3. The user can see the preview of the object they want to draw (Done)
 4. The user can finish the drawing preview and their change becomes permanent with previously drawn objects (Done)

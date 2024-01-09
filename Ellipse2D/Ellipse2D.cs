@@ -60,5 +60,10 @@ namespace Ellipse2DShape
 
             return shape;
         }
+
+        public override IShape CloneShape()
+        {
+            return new Ellipse2D();
+        }
     }
 }

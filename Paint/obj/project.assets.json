@@ -108,25 +108,6 @@
           }
         }
       },
-      "Ellipse2D/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "Fluent.Ribbon": "10.0.4",
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0"
-        },
-        "compile": {
-          "bin/placeholder/Ellipse2D.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Ellipse2D.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WPF"
-        ]
-      },
       "GraphicsLibrary/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
@@ -140,61 +121,6 @@
         },
         "runtime": {
           "bin/placeholder/GraphicsLibrary.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WPF"
-        ]
-      },
-      "Line2D/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "Fluent.Ribbon": "10.0.4",
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0"
-        },
-        "compile": {
-          "bin/placeholder/Line2D.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Line2D.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WPF"
-        ]
-      },
-      "Rectangle2D/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "Fluent.Ribbon": "10.0.4",
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0"
-        },
-        "compile": {
-          "bin/placeholder/Rectangle2D.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Rectangle2D.dll": {}
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WPF"
-        ]
-      },
-      "Text2D/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3"
-        },
-        "compile": {
-          "bin/placeholder/Text2D.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Text2D.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.WindowsDesktop.App.WPF"
@@ -371,42 +297,18 @@
         "version.txt"
       ]
     },
-    "Ellipse2D/1.0.0": {
-      "type": "project",
-      "path": "../Ellipse2D/Ellipse2D.csproj",
-      "msbuildProject": "../Ellipse2D/Ellipse2D.csproj"
-    },
     "GraphicsLibrary/1.0.0": {
       "type": "project",
       "path": "../GraphicsLibrary/GraphicsLibrary.csproj",
       "msbuildProject": "../GraphicsLibrary/GraphicsLibrary.csproj"
-    },
-    "Line2D/1.0.0": {
-      "type": "project",
-      "path": "../Line2D/Line2D.csproj",
-      "msbuildProject": "../Line2D/Line2D.csproj"
-    },
-    "Rectangle2D/1.0.0": {
-      "type": "project",
-      "path": "../Rectangle2D/Rectangle2D.csproj",
-      "msbuildProject": "../Rectangle2D/Rectangle2D.csproj"
-    },
-    "Text2D/1.0.0": {
-      "type": "project",
-      "path": "../Text2D/Text2D.csproj",
-      "msbuildProject": "../Text2D/Text2D.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0-windows7.0": [
-      "Ellipse2D >= 1.0.0",
       "Fluent.Ribbon >= 10.0.4",
       "GraphicsLibrary >= 1.0.0",
-      "Line2D >= 1.0.0",
       "Newtonsoft.Json >= 13.0.3",
-      "PropertyChanged.Fody >= 4.1.0",
-      "Rectangle2D >= 1.0.0",
-      "Text2D >= 1.0.0"
+      "PropertyChanged.Fody >= 4.1.0"
     ]
   },
   "packageFolders": {
@@ -436,20 +338,8 @@
         "net7.0-windows7.0": {
           "targetAlias": "net7.0-windows",
           "projectReferences": {
-            "C:\\Users\\Allen\\source\\repos\\Paint\\Ellipse2D\\Ellipse2D.csproj": {
-              "projectPath": "C:\\Users\\Allen\\source\\repos\\Paint\\Ellipse2D\\Ellipse2D.csproj"
-            },
             "C:\\Users\\Allen\\source\\repos\\Paint\\GraphicsLibrary\\GraphicsLibrary.csproj": {
               "projectPath": "C:\\Users\\Allen\\source\\repos\\Paint\\GraphicsLibrary\\GraphicsLibrary.csproj"
-            },
-            "C:\\Users\\Allen\\source\\repos\\Paint\\Line2D\\Line2D.csproj": {
-              "projectPath": "C:\\Users\\Allen\\source\\repos\\Paint\\Line2D\\Line2D.csproj"
-            },
-            "C:\\Users\\Allen\\source\\repos\\Paint\\Rectangle2D\\Rectangle2D.csproj": {
-              "projectPath": "C:\\Users\\Allen\\source\\repos\\Paint\\Rectangle2D\\Rectangle2D.csproj"
-            },
-            "C:\\Users\\Allen\\source\\repos\\Paint\\Text2D\\Text2D.csproj": {
-              "projectPath": "C:\\Users\\Allen\\source\\repos\\Paint\\Text2D\\Text2D.csproj"
             }
           }
         }

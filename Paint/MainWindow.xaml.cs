@@ -13,10 +13,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using GraphicsLibrary;
-using Line2DShape;
-using Rectangle2DShape;
-using Ellipse2DShape;
-using Text2DShape;
 using System.Windows.Controls.Ribbon;
 
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
@@ -31,6 +27,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Media.Media3D;
+using System.Reflection;
 // TODO: Redo , Undo for Image
 namespace Paint
 {
@@ -119,9 +116,11 @@ namespace Paint
         Point _start;
         Point _end;
         bool isDrawing = false;
+        string _choice = "";
         int index = 1;
         List<IShape> _shape = new List<IShape>();
         List<IShape> _redoUndo = new List<IShape>();
+        ShapeFactory _factory;
 
         // List Image
         List<MyImage> _image = new List<MyImage>();
@@ -129,6 +128,7 @@ namespace Paint
         // Mode when key down
         bool ctrlMode = false;
         bool shiftMode = false;
+        bool _fillMode = false;
         // Attribute
         int strokeThickNess = 1;
         Color color = Colors.Black;
@@ -160,6 +160,62 @@ namespace Paint
 
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
+
+            var abilities = new List<IShape>();
+
+            // Do tim cac kha nang
+            string folder = AppDomain.CurrentDomain.BaseDirectory;
+            var fis = (new DirectoryInfo(folder)).GetFiles("*.dll");
+
+            foreach (var fi in fis)
+            {
+                var assembly = Assembly.LoadFrom(fi.FullName);
+                var types = assembly.GetTypes();
+
+                foreach (var type in types)
+                {
+                    if (type.IsClass & (!type.IsAbstract))
+                    {
+                        if (typeof(IShape).IsAssignableFrom(type))
+                        {
+                            var shape = Activator.CreateInstance(type) as IShape;
+                            abilities.Add(shape!);
+                        }
+                    }
+                }
+            }
+            _factory = new ShapeFactory();
+            foreach (var ability in abilities)
+            {
+                _factory.Prototypes.Add(
+                    ability.Name, ability
+                );
+                var button = new Fluent.Button()
+                {
+                    Width = 80,
+                    Height = 35,
+                    Content = ability.Name,
+                    Tag = ability.Name,
+                    LargeIcon = new Image()
+                    {
+                        Source = new BitmapImage(new Uri("/Images/" + ability.Name + ".png", UriKind.Relative)),
+                    }
+                };
+                RenderOptions.SetBitmapScalingMode((DependencyObject)button.LargeIcon, BitmapScalingMode.HighQuality);
+                button.Click += (sender, args) =>
+                {
+                    var control = (Fluent.Button)sender;
+                    _choice = (string)control.Tag;
+                    _fillMode = false;
+                };
+                insertShape.Items.Add(button);
+            };
+
+            if (abilities.Count > 0)
+            {
+                _choice = abilities[0].Name;
+            }
+
             _layers.Add(new Layer() { Name = "Layer", ZIndex = _totalIndex++ });
             myListLayer.SelectedItem = _layers.First();
             myListLayer.ItemsSource = _layers;
@@ -250,34 +306,17 @@ namespace Paint
                 Color color = Color.FromArgb(pixels[3], pixels[2], pixels[1], pixels[0]);
                 if (color != old_color) break;
             }
-            bottom.X = point.X + 100;
+            bottom.X = point.X + 1;
             bottom.Y = yBottom;
 
-            IShape fillColor = new Regtangle2D();
+            IShape fillColor = _factory.Create("Regtangle2D");
             fillColor.StrokeThickness = strokeThickNess;
             fillColor.Color = new_color;
             fillColor.isFill = true;
             fillColor.Points.Add(top);
             fillColor.Points.Add(bottom);
-            colorCanvas.Children.Add(fillColor.Draw());
-        }
-        public void validate(Canvas canvas, Point point, Stack<Point> points, Color old_color, Color new_color)
-        {
-          
-            Color color = getColorAtPoint(canvas, point);
-            if(color == old_color)
-            {
-                points.Push(point);
-                IShape preview = new Regtangle2D();
-                preview.StrokeThickness = strokeThickNess;
-                preview.Color = new_color;
-                preview.DashStyle = dashStyle;
-
-                preview.Points.Add(_start);
-                preview.Points.Add(new Point(_start.X + 10, _start.Y + 10));
-                drawingCanvas.Children.Add(preview.Draw());
-            }
-
+            canvas.Children.Add(fillColor.Draw());
+            _shape.Add(fillColor);
         }
         private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -289,7 +328,7 @@ namespace Paint
             // Place the point where the mouse was clicked for the start point
             _start = e.GetPosition(drawingCanvas);
 
-            if(index == 6)
+            if(_fillMode)
             {
                 Color old_color = getColorAtPoint(drawingCanvas, _start);
                 Color new_color = color;
@@ -297,20 +336,18 @@ namespace Paint
                 double right = 0;
                 left = getLeftPoint(drawingCanvas, _start, old_color, new_color);
                 right = getRightPoint(drawingCanvas, _start, old_color, new_color);
-                Debug.WriteLine(left.ToString());
-                Debug.WriteLine(right.ToString());
-                for(double i = left; i <= right; i++)
+             
+                for(double i = left; i <= right; i+=1)
                 {
                     Point point = new Point((int)i, _start.Y);
                     fillColorTopToBottomPoint(drawingCanvas, point, old_color, new_color);
-
                 }
             }
         }
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             positionXY.Text = e.GetPosition(drawingCanvas).ToString();
-            if (isDrawing)
+            if (isDrawing && !_fillMode)
             {
                 _end = e.GetPosition(drawingCanvas);
 
@@ -318,69 +355,23 @@ namespace Paint
 
                 reDraw();
                 // Draw shapes that have already been drawn
-                if (index == 1)
-                {
-                    IShape preview = new Line2D();
-                    preview.StrokeThickness = strokeThickNess;
-                    preview.Color = color;
-                    preview.DashStyle = dashStyle;
-                    preview.Points.Add(_start);
-                    preview.Points.Add(_end);
-                    preview.ZIndex = _currentZIndex;
 
-                    drawingCanvas.Children.Add(preview.Draw());
-                }
-                if (index == 2)
-                {
-                    IShape preview = new Regtangle2D();
-                    preview.StrokeThickness = strokeThickNess;
-                    preview.Color = color;
-                    preview.DashStyle = dashStyle;
-                    preview.Points.Add(_start);
-                    preview.Points.Add(_end);
-                    preview.ZIndex = _currentZIndex;
+                IShape preview = _factory.Create(_choice);
+                preview.StrokeThickness = strokeThickNess;
+                preview.Color = color;
+                preview.DashStyle = dashStyle;
+                preview.Points.Add(_start);
+                preview.Points.Add(_end);
+                preview.ZIndex = _currentZIndex;
 
-                    drawingCanvas.Children.Add(preview.Draw());
-                }
-                if (index == 3)
+                if(_choice == "Pen2D")
                 {
-                    IShape preview = new Ellipse2D();
-                    preview.StrokeThickness = strokeThickNess;
-                    preview.Color = color;
-                    preview.DashStyle = dashStyle;
-                    preview.Points.Add(_start);
-                    preview.Points.Add(_end);
-                    preview.ZIndex = _currentZIndex;
-
-                    drawingCanvas.Children.Add(preview.Draw());
-                }
-                if(index == 4)
-                {
-                    IShape preview = new Line2D();
-                    preview.StrokeThickness = strokeThickNess;
-                    preview.Color = color;
-                    preview.DashStyle = dashStyle;
-                    preview.Points.Add(_start);
-                    preview.Points.Add(_end);
-                    preview.ZIndex = _currentZIndex;
-
                     _start = _end;
-                    drawingCanvas.Children.Add(preview.Draw());
                     _shape.Add(preview);
                     _redoUndo.Add(preview);
                 }
-                if(index == 5)
-                {
-                    IShape preview = new Text2D();
-                    preview.StrokeThickness = strokeThickNess;
-                    preview.Color = color;
-                    preview.DashStyle = dashStyle;
-                    preview.Points.Add(_start);
-                    preview.Points.Add(_end);
-                    preview.ZIndex = _currentZIndex;
 
-                    drawingCanvas.Children.Add(preview.Draw());
-                }
+                drawingCanvas.Children.Add(preview.Draw());
             }
         }
         private void Canvas_MouseUp(object sender, MouseButtonEventArgs e)
@@ -389,73 +380,18 @@ namespace Paint
 
             _end = e.GetPosition(drawingCanvas);
 
-            if (index == 1)
-            {
-                IShape shape = new Line2D();
-                shape.Points.Add(_start);
-                shape.Points.Add(_end);
-                shape.StrokeThickness = strokeThickNess;
-                shape.Color = color;
-                shape.DashStyle = dashStyle;
-                shape.ZIndex = _currentZIndex;
-                _shape.Add(shape);
-                _redoUndo.Add(shape);
-            }
-            if (index == 2)
-            {
-                IShape shape = new Regtangle2D();
-                shape.Points.Add(_start);
-                shape.Points.Add(_end);
-                shape.StrokeThickness = strokeThickNess;
-                shape.Color = color;
-                shape.DashStyle = dashStyle;
-                shape.ZIndex = _currentZIndex;
-                _shape.Add(shape);
-                _redoUndo.Add(shape);
-            }
-            if (index == 3)
-            {
-                IShape shape = new Ellipse2D();
-                shape.Points.Add(_start);
-                shape.Points.Add(_end);
-                shape.StrokeThickness = strokeThickNess;
-                shape.Color = color;
-                shape.DashStyle = dashStyle;
-                shape.ZIndex = _currentZIndex;
-                _shape.Add(shape);
-                _redoUndo.Add(shape);
-            }
-            if(index == 5)
-            {
-                IShape shape = new Text2D();
-                shape.Points.Add(_start);
-                shape.Points.Add(_end);
-                shape.StrokeThickness = strokeThickNess;
-                shape.Color = color;
-                shape.DashStyle = dashStyle;
-                shape.ZIndex = _currentZIndex;
-                _shape.Add(shape);
-                _redoUndo.Add(shape);
+            IShape shape = _factory.Create(_choice);
+            shape.Points.Add(_start);
+            shape.Points.Add(_end);
+            shape.StrokeThickness = strokeThickNess;
+            shape.Color = color;
+            shape.DashStyle = dashStyle;
+            shape.ZIndex = _currentZIndex;
+            _shape.Add(shape);
+            _redoUndo.Add(shape);
 
-            }
             reDraw();
 
-        }
-        private void Line_Click(object sender, RoutedEventArgs e)
-        {
-            index = 1;
-        }
-        private void Rectangle_Click(object sender, RoutedEventArgs e)
-        {
-            index = 2;
-        }
-        private void Ellipse_Click(object sender, RoutedEventArgs e)
-        {
-            index = 3;
-        }
-        private void Pen_Click(object sender, RoutedEventArgs e)
-        {
-            index = 4;
         }
         private void Undo_Click(object sender, RoutedEventArgs e)
         {
@@ -816,10 +752,6 @@ namespace Paint
                 }
             }
         }
-        private void Text_Click(object sender, RoutedEventArgs e)
-        {
-            index = 5;
-        }
         private void Insert_Image_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -861,7 +793,7 @@ namespace Paint
         }
         private void Fill_Click(object sender, RoutedEventArgs e)
         {
-            index = 6;
+            _fillMode = true;
         }
         private void BackStageSave_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -1069,6 +1001,33 @@ namespace Paint
             }
         }
 
+        private void BackStageNew_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var result = MessageBox.Show("Do you want to save before creating a new one?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                backStage.IsOpen = false;
+                Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+                saveFileDialog.Filter = "Binary File (*.bin)|*.bin";
+                saveFileDialog.RestoreDirectory = true;
+                saveFileDialog.Title = "Save as Binary File";
+
+                // Create the data to save
+                DrawingData drawingData = new DrawingData();
+                drawingData._shape = _shape;
+                drawingData._image = _image;
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    SaveCanvasToBin(drawingData, saveFileDialog.FileName);
+
+                    var Paint = new MainWindow();
+                    Paint.Show();
+                    this.Close();
+                }
+            }
+        }
 
         private void Select_Click(object sender, RoutedEventArgs e)
         {
@@ -1090,7 +1049,6 @@ namespace Paint
             }
             
         }
-
     }
 
 }

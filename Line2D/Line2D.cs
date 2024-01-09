@@ -49,5 +49,10 @@ namespace Line2DShape
 
             return shape;
         }
+
+        public override IShape CloneShape()
+        {
+            return new Line2D();
+        }
     }
 }

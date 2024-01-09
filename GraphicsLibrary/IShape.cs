@@ -13,11 +13,14 @@ namespace GraphicsLibrary
         public Color Color { get; set; } = Colors.Black;
         public string DashStyle { get; set; } = "1, 0";
         public int hashCode { get; set; }
-        public string Text { get; set; } = "Hello World!";
+        public string Text { get; set; } = "Your Text!";
         public int ZIndex { get; set; } = 0;
         public bool isFill { get; set; } = false;
         public abstract void HandleShiftMode();
         public abstract UIElement Draw();
         public abstract IShape Clone();
+
+        public abstract IShape CloneShape();
+
     }
 }

@@ -23,7 +23,7 @@
             <Fluent:Ribbon.Menu>
                 <Fluent:Backstage Header="File"  x:Name="backStage">
                     <Fluent:BackstageTabControl>
-                        <Fluent:BackstageTabItem Header="New"/>
+                        <Fluent:BackstageTabItem Header="New" MouseDown ="BackStageNew_MouseDown"/>
                         <Fluent:BackstageTabItem Header="Load" MouseDown ="BackStageLoad_MouseDown"/>
                         <Fluent:BackstageTabItem Header="Save" MouseDown="BackStageSave_MouseDown"/>
                         <Fluent:BackstageTabItem Header="Save as" MouseDown="BackStageSaveAs_MouseDown"/>
@@ -86,35 +86,9 @@
                             <Image Source="/Images/image.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </Fluent:Button.LargeIcon>
                     </Fluent:Button>
-                    <Fluent:Button Header="Text Insert" Click="Text_Click">
-                        <Fluent:Button.LargeIcon>
-                            <Image Source="/Images/text.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
                 </Fluent:RibbonGroupBox>
                 <!--Shape-->
-                <Fluent:RibbonGroupBox Header="Shape">
-                    <Fluent:Button Header="Line" Click="Line_Click">
-                        <Fluent:Button.LargeIcon>
-                            <Image Source="/Images/diagonal-line.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
-                    <Fluent:Button Header="Rectangle" Click="Rectangle_Click">
-                        <Fluent:Button.LargeIcon>
-                            <Image Source="/Images/rectangle.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
-                    <Fluent:Button Header="Ellipse" Click="Ellipse_Click">
-                        <Fluent:Button.LargeIcon>
-                            <Image Source="/Images/ellipse.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
-                    <Fluent:Button Header="Pen" Click="Pen_Click">
-                        <Fluent:Button.LargeIcon>
-                            <Image Source="/Images/pen.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </Fluent:Button.LargeIcon>
-                    </Fluent:Button>
-                </Fluent:RibbonGroupBox>
+                <Fluent:RibbonGroupBox x:Name="insertShape" Header="Shape"/>
                 <!--Style-->
                 <Fluent:RibbonGroupBox Header="Style" State="Collapsed">
                     <Fluent:DropDownButton Header="Thick">
@@ -164,7 +138,7 @@
                     </ScrollViewer>
                 </Fluent:RibbonGroupBox>
                 <!--Slider-->
-                <Fluent:RibbonGroupBox Header="Slider">
+                <Fluent:RibbonGroupBox Header="Zoom">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding ElementName=scaleSlider, Path=Value, Converter={StaticResource percentConverter}}" 
                                    d:Text="Value%"

@@ -8,14 +8,10 @@
     ".NETCoreApp,Version=v7.0": {
       "Paint/1.0.0": {
         "dependencies": {
-          "Ellipse2D": "1.0.0",
           "Fluent.Ribbon": "10.0.4",
           "GraphicsLibrary": "1.0.0",
-          "Line2D": "1.0.0",
           "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0",
-          "Rectangle2D": "1.0.0",
-          "Text2D": "1.0.0"
+          "PropertyChanged.Fody": "4.1.0"
         },
         "runtime": {
           "Paint.dll": {}
@@ -67,17 +63,6 @@
         }
       },
       "System.Text.Json/5.0.2": {},
-      "Ellipse2D/1.0.0": {
-        "dependencies": {
-          "Fluent.Ribbon": "10.0.4",
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0"
-        },
-        "runtime": {
-          "Ellipse2D.dll": {}
-        }
-      },
       "GraphicsLibrary/1.0.0": {
         "dependencies": {
           "Fluent.Ribbon": "10.0.4",
@@ -86,37 +71,6 @@
         },
         "runtime": {
           "GraphicsLibrary.dll": {}
-        }
-      },
-      "Line2D/1.0.0": {
-        "dependencies": {
-          "Fluent.Ribbon": "10.0.4",
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0"
-        },
-        "runtime": {
-          "Line2D.dll": {}
-        }
-      },
-      "Rectangle2D/1.0.0": {
-        "dependencies": {
-          "Fluent.Ribbon": "10.0.4",
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "PropertyChanged.Fody": "4.1.0"
-        },
-        "runtime": {
-          "Rectangle2D.dll": {}
-        }
-      },
-      "Text2D/1.0.0": {
-        "dependencies": {
-          "GraphicsLibrary": "1.0.0",
-          "Newtonsoft.Json": "13.0.3"
-        },
-        "runtime": {
-          "Text2D.dll": {}
         }
       }
     }
@@ -176,27 +130,7 @@
       "path": "system.text.json/5.0.2",
       "hashPath": "system.text.json.5.0.2.nupkg.sha512"
     },
-    "Ellipse2D/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
     "GraphicsLibrary/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Line2D/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Rectangle2D/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Text2D/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
