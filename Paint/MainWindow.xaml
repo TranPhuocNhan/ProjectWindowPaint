@@ -171,6 +171,21 @@
                         <Button Click="DeleteLayer_Click" Content="Delete"  Margin="5 0 5 5" Padding="5" Background="AliceBlue"/>
                     </StackPanel>
                 </Fluent:RibbonGroupBox>
+                <!--Rotation-->
+                <Fluent:RibbonGroupBox Header="Rotation">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding ElementName=rotationSlider, Path=Value, Converter={StaticResource percentConverter}}" 
+                                   d:Text="Value%"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   Margin="5"/>
+                        <Slider x:Name="rotationSlider" Width="100" Margin="5 20"
+                                Maximum="360" Minimum="0"
+                                IsSnapToTickEnabled="True"
+                                TickFrequency="1"
+                                ValueChanged="RotationValueChanged_Handler"/>
+                    </StackPanel>
+                </Fluent:RibbonGroupBox>
             </Fluent:RibbonTabItem>
         </Fluent:Ribbon>
 
@@ -190,17 +205,11 @@
             </Canvas>
             <Canvas  Grid.Row="0"
                 ClipToBounds="True"
-                x:Name="colorCanvas"
-                Background="Transparent"/>
-            <Canvas  Grid.Row="0"
-                ClipToBounds="True"
                 x:Name="drawingBorder"
                 Background="Transparent"
                 MouseDown="Canvas_MouseDown"
                 MouseMove="Canvas_MouseMove"
                 MouseUp="Canvas_MouseUp"/>
-
-
 
             <TextBlock x:Name="positionXY"
                 Grid.Row="1" 

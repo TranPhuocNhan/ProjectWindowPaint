@@ -34,8 +34,14 @@ namespace Ellipse2DShape
             // Because the ellipse is drawn from the top left corner
             Canvas.SetLeft(ellipse, Math.Min(Points[0].X, Points[1].X));
             Canvas.SetTop(ellipse, Math.Min(Points[0].Y, Points[1].Y));
-            
-            Canvas.SetZIndex(ellipse, ZIndex);  
+            Canvas.SetZIndex(ellipse, ZIndex);
+
+            double x = (Math.Abs(Points[0].X - Points[1].X)) / 2;
+            double y = (Math.Abs(Points[0].Y - Points[1].Y)) / 2;
+            RotateTransform transform = new RotateTransform(this.rotationAngle, x, y);
+
+
+            ellipse.RenderTransform = transform;
 
             return ellipse;
         }
@@ -64,6 +70,11 @@ namespace Ellipse2DShape
         public override IShape CloneShape()
         {
             return new Ellipse2D();
+        }
+
+        public override List<UIElement> adornedShape()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -5,6 +5,8 @@ using System.Windows.Shapes;
 using System.Windows.Media;
 using GraphicsLibrary;
 using System.Windows.Controls;
+using System.CodeDom;
+using System.Windows.Media.Media3D;
 
 namespace Rectangle2DShape
 {
@@ -26,7 +28,7 @@ namespace Rectangle2DShape
             rectangle.Stroke = new SolidColorBrush(Color);
             rectangle.StrokeThickness = StrokeThickness;
             rectangle.StrokeDashArray = DoubleCollection.Parse(DashStyle);
-            
+
             if(isFill)
             {
                 rectangle.Fill = new SolidColorBrush(Color);
@@ -37,6 +39,12 @@ namespace Rectangle2DShape
             Canvas.SetTop(rectangle, Math.Min(Points[0].Y, Points[1].Y));
             Canvas.SetZIndex(rectangle, ZIndex);
 
+            double x = (Math.Abs(Points[0].X - Points[1].X)) / 2;
+            double y = (Math.Abs(Points[0].Y - Points[1].Y)) / 2;
+            RotateTransform transform = new RotateTransform(this.rotationAngle, x, y);
+
+
+            rectangle.RenderTransform = transform;
 
             return rectangle;
         }
@@ -65,6 +73,11 @@ namespace Rectangle2DShape
         public override IShape CloneShape()
         {
              return new Regtangle2D();
+        }
+
+        public override List<UIElement> adornedShape()
+        {
+            throw new NotImplementedException();
         }
     }
 }

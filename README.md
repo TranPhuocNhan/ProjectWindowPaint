@@ -41,14 +41,14 @@ Expected work hours: 10 hours (Not including Learning / Studying / Debugging)
 3. Adding image to the canvas (Done)
 4. Reduce flickering when drawing preview by using buffer to redraw all the canvas (Done)
     
-    Upgrade: Only redraw the needed region, no fullscreen redraw
+    Upgrade: Only redraw the needed region, no fullscreen redraw (Done)
     
 5. Adding Layers support (Done)
 6. Select a single element for editing again
     
-    Transforming horizontally and vertically
+    Transforming horizontally and vertically (Done)
     
-    Rotate the image
+    Rotate the image (Done)
     
     Drag & Drop (Done)
     

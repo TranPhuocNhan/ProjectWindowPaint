@@ -116,11 +116,16 @@ namespace Paint
         Point _start;
         Point _end;
         bool isDrawing = false;
+        bool _isResize = false;
+
         string _choice = "";
         int index = 1;
         List<IShape> _shape = new List<IShape>();
         List<IShape> _redoUndo = new List<IShape>();
         ShapeFactory _factory;
+
+        UIElement _controlOutline = null;
+        List<ResizePoint> _resizePoints = new List<ResizePoint>();
 
         // List Image
         List<MyImage> _image = new List<MyImage>();
@@ -145,6 +150,7 @@ namespace Paint
         IShape _clone = null;
         // Current Image
         Image _currentImage = null;
+        IShape _currentIShape = null;
 
         MyImage _myImageClone = null;
 
@@ -160,6 +166,7 @@ namespace Paint
 
         private void RibbonWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            this.WindowState = WindowState.Maximized;
 
             var abilities = new List<IShape>();
 
@@ -463,7 +470,15 @@ namespace Paint
             _selectedShape = sender as UIElement;
             var _line = _selectedShape as Line;
 
-            AdornerLayer.GetAdornerLayer(drawingCanvas).Add(new ResizeAdorner(_selectedShape));
+            // Get Ishape
+            for (int i = 0; i < _shape.Count; i++)
+            {
+                if (_shape[i].hashCode == _selectedShape.GetHashCode())
+                {
+                    rotationSlider.Value = _shape[i].rotationAngle;
+                    break;
+                }
+            }
 
             offset = e.GetPosition(drawingCanvas);
             endOffSet = e.GetPosition(drawingCanvas);
@@ -485,7 +500,15 @@ namespace Paint
             }
             else
             {
-                AdornerLayer.GetAdornerLayer(drawingCanvas).Add(new ResizeAdorner(_selectedShape));
+                // Get Ishape
+                for (int i = 0; i < _shape.Count; i++)
+                {
+                    if (_shape[i].hashCode == _selectedShape.GetHashCode())
+                    {
+                        rotationSlider.Value = _shape[i].rotationAngle;
+                        break;
+                    }
+                }
 
                 offset = e.GetPosition(drawingCanvas);
                 offset.Y -= Canvas.GetTop(_selectedShape);
@@ -499,12 +522,290 @@ namespace Paint
             _selectedShape = sender as UIElement;
             _currentUIElement = sender as UIElement;
 
-            AdornerLayer.GetAdornerLayer(drawingCanvas).Add(new ResizeAdorner(_selectedShape));
+            // Get Ishape
+            for(int i = 0; i < _shape.Count; i++)
+            {
+                if (_shape[i].hashCode == _selectedShape.GetHashCode())
+                {
+                    _currentIShape = _shape[i];
+
+                    _resizePoints.Clear();
+                    _resizePoints = _currentIShape.GetControlPoints();
+                    double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                    double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                    for(int j = 0; j < _resizePoints.Count; j++)
+                    {
+                        UIElement uIElement = _resizePoints[j].drawPoint(0, new Point(x, y));
+                        uIElement.MouseDown += UIElement_MouseDown;
+                        if (_resizePoints[j].typeName.Equals("TopLeft"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("TopRight"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                        }
+                        uIElement.MouseUp += UIElement_MouseUp;
+                        drawingCanvas.Children.Add(uIElement);
+                    }
+
+                    _controlOutline = _shape[i].controlOutline();
+                    drawingCanvas.Children.Add(_controlOutline);
+                    rotationSlider.Value = _shape[i].rotationAngle;
+                    break;
+                }
+            }
 
             offset = e.GetPosition(drawingCanvas);
             offset.Y -= Canvas.GetTop(_selectedShape);
             offset.X -= Canvas.GetLeft(_selectedShape);
             drawingCanvas.CaptureMouse();
+        }
+        private void RotationValueChanged_Handler(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {       
+            if (_currentIShape == null) { return; }
+           
+            _currentIShape.rotationAngle = (int)rotationSlider.Value;
+            reDraw();
+            _controlOutline = _currentIShape.controlOutline();
+            drawingCanvas.Children.Add(_controlOutline);
+            _resizePoints.Clear();
+            _resizePoints = _currentIShape.GetControlPoints();
+            double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+            double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+
+            if (_currentIShape.Name.Equals("Line2D"))
+            {
+                x = _currentIShape.Points[0].X;
+                y = _currentIShape.Points[0].Y;
+            }
+
+            for (int j = 0; j < _resizePoints.Count; j++)
+            {
+                UIElement uIElement = _resizePoints[j].drawPoint((int)rotationSlider.Value, new Point(x, y));
+                uIElement.MouseDown += UIElement_MouseDown;
+
+                if (_resizePoints[j].typeName.Equals("TopLeft"))
+                {
+                    uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                }
+                else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                {
+                    uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                }
+                else if (_resizePoints[j].typeName.Equals("TopRight"))
+                {
+                    uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                }
+                else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                {
+                    uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                }
+
+                uIElement.MouseUp += UIElement_MouseUp;
+                drawingCanvas.Children.Add(uIElement);
+            }
+        }
+        private void UIElement_MouseMoveTopleft(object sender, MouseEventArgs e)
+        {
+            if (_isResize)
+            {
+                Point position = e.GetPosition(drawingCanvas);
+                _currentIShape.Points[0] = position;
+                reDraw();
+                _controlOutline = _currentIShape.controlOutline();
+                drawingCanvas.Children.Add(_controlOutline);
+
+                _resizePoints.Clear();
+                _resizePoints = _currentIShape.GetControlPoints();
+                double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                for (int j = 0; j < _resizePoints.Count; j++)
+                {
+                    UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                    uIElement.MouseDown += UIElement_MouseDown;
+                    if (_resizePoints[j].typeName.Equals("TopLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("TopRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                    }
+                    uIElement.MouseUp += UIElement_MouseUp;
+                    drawingCanvas.Children.Add(uIElement);
+                }
+            }
+        }
+        private void UIElement_MouseMoveBottomLeft(object sender, MouseEventArgs e)
+        {
+            Point position = e.GetPosition(drawingCanvas);
+
+            if (_isResize)
+            {
+                _currentIShape.Points[0] = new Point(position.X, _currentIShape.Points[0].Y);
+                _currentIShape.Points[1] = new Point(_currentIShape.Points[1].X, position.Y);
+                reDraw();
+                _controlOutline = _currentIShape.controlOutline();
+                drawingCanvas.Children.Add(_controlOutline);
+
+                _resizePoints.Clear();
+                _resizePoints = _currentIShape.GetControlPoints();
+                double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                for (int j = 0; j < _resizePoints.Count; j++)
+                {
+                    UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                    uIElement.MouseDown += UIElement_MouseDown;
+                    if (_resizePoints[j].typeName.Equals("TopLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("TopRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                    }
+                    uIElement.MouseUp += UIElement_MouseUp;
+                    drawingCanvas.Children.Add(uIElement);
+                }
+            }
+        }
+        private void UIElement_MouseMoveTopRight(object sender, MouseEventArgs e)
+        {
+            Point position = e.GetPosition(drawingCanvas);
+
+            if (_isResize)
+            {
+                _currentIShape.Points[0] = new Point(_currentIShape.Points[0].X, position.Y);
+                _currentIShape.Points[1] = new Point(position.X, _currentIShape.Points[1].Y);
+                reDraw();
+                _controlOutline = _currentIShape.controlOutline();
+                drawingCanvas.Children.Add(_controlOutline);
+
+                _resizePoints.Clear();
+                _resizePoints = _currentIShape.GetControlPoints();
+                double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                for (int j = 0; j < _resizePoints.Count; j++)
+                {
+                    UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                    uIElement.MouseDown += UIElement_MouseDown;
+                    if (_resizePoints[j].typeName.Equals("TopLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("TopRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                    }
+                    uIElement.MouseUp += UIElement_MouseUp;
+                    drawingCanvas.Children.Add(uIElement);
+                }
+            }
+        } 
+        private void UIElement_MouseMoveBottomRight(object sender, MouseEventArgs e)
+        {
+            Point position = e.GetPosition(drawingCanvas);
+
+            if (_isResize)
+            {
+                _currentIShape.Points[1] = position;
+                reDraw();
+                _controlOutline = _currentIShape.controlOutline();
+                drawingCanvas.Children.Add(_controlOutline);
+
+                _resizePoints.Clear();
+                _resizePoints = _currentIShape.GetControlPoints();
+                double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                for (int j = 0; j < _resizePoints.Count; j++)
+                {
+                    UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                    uIElement.MouseDown += UIElement_MouseDown;
+                    if (_resizePoints[j].typeName.Equals("TopLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("TopRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                    }
+                    else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                    {
+                        uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                    }
+                    uIElement.MouseUp += UIElement_MouseUp;
+                    drawingCanvas.Children.Add(uIElement);
+                }
+            }
+        }
+        private void UIElement_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _isResize = true;
+        }
+        private void UIElement_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _isResize = false;
         }
         private void drawingCanvas_PreviewMouseMove(object sender, MouseEventArgs e)
         {
@@ -520,19 +821,142 @@ namespace Paint
                     _line.X2 = position.X - endOffSet.X;
                     _line.Y2 = position.Y - endOffSet.Y;
 
+                    for(int i = 0; i < _shape.Count; i++)
+                    {
+                        if (_shape[i].hashCode == _selectedShape.GetHashCode())
+                        {
+                            _currentIShape = _shape[i];
+                            break;
+                        }
+                    }
+
+                    reDraw();
+                    _controlOutline = _currentIShape.controlOutline();
+                    drawingCanvas.Children.Add(_controlOutline);
+
+                    _resizePoints.Clear();
+                    _resizePoints = _currentIShape.GetControlPoints();
+                    double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                    double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                    for (int j = 0; j < _resizePoints.Count; j++)
+                    {
+                        UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                        uIElement.MouseDown += UIElement_MouseDown;
+                        if (_resizePoints[j].typeName.Equals("TopLeft"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("TopRight"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                        }
+                        uIElement.MouseUp += UIElement_MouseUp;
+                        drawingCanvas.Children.Add(uIElement);
+                    }
+
                 }
                 else if (_selectedShape is TextBox)
                 {
                     if (!ctrlMode)
                     {
-                        Canvas.SetTop(_selectedShape, position.Y - offset.Y);
-                        Canvas.SetLeft(_selectedShape, position.X - offset.X);
+                        for(int i = 0; i < _shape.Count; i++)
+                        {
+                            if (_shape[i].hashCode == _selectedShape.GetHashCode())
+                            {
+                                _currentIShape = _shape[i];
+                                break;
+                            }
+                        }
+                        _currentIShape.Points[0] = new Point(position.X - offset.X, position.Y - offset.Y);
+                        _currentIShape.Points[1] = new Point(position.X - offset.X + _selectedShape.RenderSize.Width, position.Y - offset.Y + _selectedShape.RenderSize.Height);
+                        reDraw();
+                        _controlOutline = _currentIShape.controlOutline();
+                        drawingCanvas.Children.Add(_controlOutline);
+
+                        _resizePoints.Clear();
+                        _resizePoints = _currentIShape.GetControlPoints();
+                        double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                        double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                        for (int j = 0; j < _resizePoints.Count; j++)
+                        {
+                            UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                            uIElement.MouseDown += UIElement_MouseDown;
+                            if (_resizePoints[j].typeName.Equals("TopLeft"))
+                            {
+                                uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                            }
+                            else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                            {
+                                uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                            }
+                            else if (_resizePoints[j].typeName.Equals("TopRight"))
+                            {
+                                uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                            }
+                            else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                            {
+                                uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                            }
+                            uIElement.MouseUp += UIElement_MouseUp;
+                            drawingCanvas.Children.Add(uIElement);
+                        }
                     }
                 }
                 else
                 {
-                    Canvas.SetTop(_selectedShape, position.Y - offset.Y);
-                    Canvas.SetLeft(_selectedShape, position.X - offset.X);
+                    _currentIShape.Points[0] = new Point(position.X - offset.X, position.Y - offset.Y);
+                    _currentIShape.Points[1] = new Point(position.X - offset.X + _selectedShape.RenderSize.Width, position.Y - offset.Y + _selectedShape.RenderSize.Height);
+                    reDraw();
+                    _controlOutline = _currentIShape.controlOutline();
+                    drawingCanvas.Children.Add(_controlOutline);
+
+                    _resizePoints.Clear();
+                    _resizePoints = _currentIShape.GetControlPoints();
+                    double x = (Math.Abs(_currentIShape.Points[0].X + _currentIShape.Points[1].X)) / 2;
+                    double y = (Math.Abs(_currentIShape.Points[0].Y + _currentIShape.Points[1].Y)) / 2;
+                    for (int j = 0; j < _resizePoints.Count; j++)
+                    {
+                        UIElement uIElement = _resizePoints[j].drawPoint(_currentIShape.rotationAngle, new Point(x, y));
+                        uIElement.MouseDown += UIElement_MouseDown;
+                        if (_resizePoints[j].typeName.Equals("TopLeft"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveTopleft;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("BottomLeft"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveBottomLeft;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("TopRight"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveTopRight;
+
+                        }
+                        else if (_resizePoints[j].typeName.Equals("BottomRight"))
+                        {
+                            uIElement.MouseMove += UIElement_MouseMoveBottomRight;
+
+                        }
+                        uIElement.MouseUp += UIElement_MouseUp;
+                        drawingCanvas.Children.Add(uIElement);
+                    }
                 }
 
             } else if (_selectedImage != null)
@@ -551,8 +975,14 @@ namespace Paint
                 {
                     if (_shape[i].hashCode == _selectedShape.GetHashCode())
                     {
+                        if (_shape[i].Name == "Line2D")
+                        {
+                            _selectedShape = null;
+                            return;
+                        }
                         _shape[i].Points[0] = new Point(Canvas.GetLeft(_selectedShape), Canvas.GetTop(_selectedShape));
                         _shape[i].Points[1] = new Point(Canvas.GetLeft(_selectedShape) + _selectedShape.RenderSize.Width, Canvas.GetTop(_selectedShape) + _selectedShape.RenderSize.Height);
+                           
                         break;
                     }
                 }
@@ -845,6 +1275,8 @@ namespace Paint
             _shape = drawingData._shape;
             _image = drawingData._image;
             reDraw();
+            backStage.IsOpen = false;
+
         }
         private void BackStageSaveAs_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -958,7 +1390,6 @@ namespace Paint
                 drawingCanvas.RenderTransform = st;
             }
         }
-
         private void AddLayer_Click(object sender, RoutedEventArgs e)
         {
             
@@ -968,7 +1399,6 @@ namespace Paint
                 myListLayer.SelectedItem = _layers.First();
             }
         }
-
         private void DeleteLayer_Click(object sender, RoutedEventArgs e)
         {
             if(_layers.Count > 0)
@@ -992,7 +1422,6 @@ namespace Paint
                 }
             }
         }
-
         private void myListLayer_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if(myListLayer.SelectedIndex != -1)
@@ -1000,7 +1429,6 @@ namespace Paint
                 _currentZIndex = _layers[myListLayer.SelectedIndex].ZIndex;
             }
         }
-
         private void BackStageNew_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var result = MessageBox.Show("Do you want to save before creating a new one?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -1028,7 +1456,6 @@ namespace Paint
                 }
             }
         }
-
         private void Select_Click(object sender, RoutedEventArgs e)
         {
 
@@ -1044,6 +1471,9 @@ namespace Paint
             {
                 _isDragDropMode = false;
                 btnSelect.Foreground = Brushes.Black;
+                _currentUIElement = null;
+                _selectedShape = null;
+                _selectedImage = null;
                 Canvas.SetZIndex(drawingCanvas, 0);
                 Canvas.SetZIndex(drawingBorder, 1);
             }

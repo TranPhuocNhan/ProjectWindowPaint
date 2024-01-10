@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -31,8 +32,11 @@ namespace Text2DShape
 
             Canvas.SetLeft(text, Math.Min(Points[0].X, Points[1].X));
             Canvas.SetTop(text, Math.Min(Points[0].Y, Points[1].Y));
-
             Canvas.SetZIndex(text, ZIndex);
+
+            double x = (Math.Abs(Points[0].X - Points[1].X)) / 2;
+            double y = (Math.Abs(Points[0].Y - Points[1].Y)) / 2;
+            RotateTransform transform = new RotateTransform(this.rotationAngle, x, y);
 
             return text;
         }
@@ -55,6 +59,11 @@ namespace Text2DShape
         public override IShape CloneShape()
         {
             return new Text2D();
+        }
+
+        public override List<UIElement> adornedShape()
+        {
+            throw new NotImplementedException();
         }
     }
 }

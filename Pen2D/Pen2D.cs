@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Pen2DShape
 {
@@ -53,6 +54,11 @@ namespace Pen2DShape
         public override IShape CloneShape()
         {
             return new Pen2D();
+        }
+
+        public override List<UIElement> adornedShape()
+        {
+            throw new NotImplementedException();
         }
     }
 }
