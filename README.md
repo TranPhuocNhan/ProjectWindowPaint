@@ -36,7 +36,7 @@ Expected work hours: 10 hours (Not including Learning / Studying / Debugging)
 
 # Improvements (Choose and propose as you wish)
 
-1. Allow the user to change the color, pen width, stroke type (dash, dot, dash dot dot..._ (Done)
+1. Allow the user to change the color, pen width, stroke type (dash, dot, dash dot dot..._) (Done)
 2. Adding text to the list of drawable objects (Done)
 3. Adding image to the canvas (Done)
 4. Reduce flickering when drawing preview by using buffer to redraw all the canvas (Done)
@@ -44,7 +44,7 @@ Expected work hours: 10 hours (Not including Learning / Studying / Debugging)
     Upgrade: Only redraw the needed region, no fullscreen redraw (Done)
     
 5. Adding Layers support (Done)
-6. Select a single element for editing again
+6. Select a single element for editing again (Done)
     
     Transforming horizontally and vertically (Done)
     
